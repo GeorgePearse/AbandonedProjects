@@ -1,0 +1,393 @@
+---
+import { parse } from 'csv-parse/sync';
+import { readFileSync } from 'fs';
+
+// Read and parse CSV
+const csvPath = new URL('../../public/candidates.csv', import.meta.url);
+const csvContent = readFileSync(csvPath, 'utf-8');
+const records = parse(csvContent, {
+  columns: true,
+  skip_empty_lines: true
+});
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/AbandonedProjects/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Candidate Projects - Abandoned Projects</title>
+    <meta name="description" content="Discovered abandoned Python projects ranked by popularity and maintenance need." />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <nav class="breadcrumb">
+          <a href="/AbandonedProjects/">Home</a> /
+          <a href="/AbandonedProjects/projects">Projects</a> /
+          <a href="/AbandonedProjects/candidates">Candidates</a>
+        </nav>
+        <h1>Candidate Projects</h1>
+        <p class="subtitle">
+          Top abandoned Python projects discovered via automated GitHub search
+        </p>
+      </header>
+
+      <main>
+        <div class="info-box">
+          <p>
+            <strong>Search Criteria:</strong> Python repositories with 1,000+ stars, no commits in 1+ year, not archived
+          </p>
+          <p>
+            <strong>Last Updated:</strong> October 24, 2025
+          </p>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Project</th>
+                <th>Stars</th>
+                <th>Last Commit</th>
+                <th>Days Abandoned</th>
+                <th>Open Issues</th>
+                <th>Score</th>
+                <th>Active Fork</th>
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((record, index) => (
+                <tr>
+                  <td class="rank">{index + 1}</td>
+                  <td class="project">
+                    <a href={record.url} target="_blank" rel="noopener noreferrer">
+                      <strong>{record.name}</strong>
+                    </a>
+                    <span class="owner">{record.owner}</span>
+                  </td>
+                  <td class="stars">{parseInt(record.stars).toLocaleString()}</td>
+                  <td class="date">{record.last_commit}</td>
+                  <td class="days">{record.days_abandoned}</td>
+                  <td class="issues">{record.open_issues}</td>
+                  <td class="score">{record.score}</td>
+                  <td class="fork">
+                    {record.active_fork_name ? (
+                      <a href={record.active_fork_url} target="_blank" rel="noopener noreferrer">
+                        ✓ {record.active_fork_name.split('/')[1]}
+                      </a>
+                    ) : (
+                      <span class="no-fork">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="legend">
+          <h3>Column Descriptions</h3>
+          <dl>
+            <dt>Score</dt>
+            <dd>Calculated as: (stars / 1000) × (days_abandoned / 365) × (1 / (open_issues + 1)). Higher = better candidate.</dd>
+
+            <dt>Active Fork</dt>
+            <dd>Most active fork with commits in the last 6 months (if found).</dd>
+          </dl>
+        </div>
+      </main>
+
+      <footer>
+        <p>
+          Generated using <a href="https://github.com/GeorgePearse/AbandonedProjects/tree/main/scripts">find_abandoned_projects.py</a>
+        </p>
+        <p>
+          <a href="https://github.com/GeorgePearse/AbandonedProjects" target="_blank" rel="noopener noreferrer">
+            View on GitHub
+          </a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0f7ff;
+    color: #1a1a1a;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .breadcrumb {
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+  }
+
+  .breadcrumb a {
+    color: #666666;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: #000000;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #000000;
+    letter-spacing: -0.02em;
+  }
+
+  .subtitle {
+    font-size: 1.125rem;
+    color: #666666;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+
+  .back-link {
+    display: inline-block;
+    color: #000000;
+    text-decoration: none;
+    font-size: 0.9375rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .back-link:hover {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+  }
+
+  .info-box {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .info-box p {
+    margin: 0.5rem 0;
+    font-size: 0.9375rem;
+    color: #666666;
+  }
+
+  .info-box strong {
+    color: #000000;
+  }
+
+  .table-container {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background: #fafafa;
+    border-bottom: 2px solid #e5e5e5;
+  }
+
+  th {
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9375rem;
+  }
+
+  tbody tr:hover {
+    background: #fafafa;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .rank {
+    font-weight: 600;
+    color: #999999;
+    width: 60px;
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .project a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .project a:hover {
+    text-decoration: underline;
+  }
+
+  .owner {
+    font-size: 0.8125rem;
+    color: #999999;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+
+  .stars {
+    font-weight: 600;
+    color: #000000;
+  }
+
+  .date {
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.875rem;
+    color: #666666;
+  }
+
+  .days {
+    color: #cf222e;
+    font-weight: 500;
+  }
+
+  .issues {
+    color: #666666;
+  }
+
+  .score {
+    font-weight: 600;
+    color: #000000;
+    font-size: 1.125rem;
+  }
+
+  .fork a {
+    color: #10b981;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .fork a:hover {
+    text-decoration: underline;
+  }
+
+  .no-fork {
+    color: #cccccc;
+  }
+
+  .legend {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .legend h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #000000;
+  }
+
+  .legend dl {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .legend dt {
+    font-weight: 600;
+    color: #000000;
+    font-size: 0.9375rem;
+  }
+
+  .legend dd {
+    margin: 0;
+    color: #666666;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  footer {
+    text-align: center;
+    padding: 3rem 0 0 0;
+    color: #999999;
+    font-size: 0.875rem;
+  }
+
+  footer p {
+    margin: 0.5rem 0;
+  }
+
+  footer a {
+    color: #666666;
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    opacity: 0.7;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .table-container {
+      font-size: 0.875rem;
+    }
+
+    th, td {
+      padding: 0.75rem 0.5rem;
+    }
+
+    .rank {
+      width: 40px;
+    }
+  }
+</style>

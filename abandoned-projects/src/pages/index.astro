@@ -1,6 +1,4 @@
 ---
-import ComparisonCard from '../components/ComparisonCard.astro';
-import projects from '../data/projects.json';
 ---
 
 <html lang="en">
@@ -19,79 +17,59 @@ import projects from '../data/projects.json';
         <p class="subtitle">
           Documenting unmaintained open-source projects and their maintained alternatives
         </p>
+      </header>
 
-        <div class="warning-box">
-          <p>
+      <main>
+        <div class="hero">
+          <p class="lead">
             Popular open-source libraries sometimes become abandoned, leaving users with security vulnerabilities
             and compatibility issues. This site documents these projects and highlights actively maintained forks
             that provide drop-in replacements.
           </p>
         </div>
 
-        <div class="about-section">
+        <div class="cards">
+          <a href="/AbandonedProjects/projects" class="card">
+            <h2>Featured Projects</h2>
+            <p>Curated side-by-side comparisons of abandoned projects and their actively maintained forks</p>
+            <span class="arrow">→</span>
+          </a>
+
+          <a href="/AbandonedProjects/candidates" class="card">
+            <h2>Candidate Projects</h2>
+            <p>Browse 10+ abandoned Python projects discovered via automated GitHub search</p>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+
+        <div class="info-section">
           <h2>Why This Matters</h2>
           <p>
             When widely-used libraries stop receiving updates, projects depending on them face:
           </p>
           <ul>
-            <li><strong>Security vulnerabilities</strong> - No patches for newly discovered exploits</li>
-            <li><strong>Compatibility issues</strong> - Breaking changes with modern dependencies (e.g., NumPy 2.x, Python 3.13+)</li>
-            <li><strong>Technical debt</strong> - Increasingly difficult to maintain and migrate away from</li>
-            <li><strong>Supply chain risks</strong> - Unmaintained packages can become targets for malicious takeovers</li>
+            <li>Security vulnerabilities - No patches for newly discovered exploits</li>
+            <li>Compatibility issues - Breaking changes with modern dependencies</li>
+            <li>Technical debt - Increasingly difficult to maintain and migrate</li>
+            <li>Supply chain risks - Targets for malicious takeovers</li>
           </ul>
 
           <h2>The Solution</h2>
           <p>
-            Community-maintained forks can breathe new life into abandoned projects. These forks provide:
+            Community-maintained forks provide active maintenance, modern compatibility, security patches,
+            and often serve as drop-in replacements with minimal migration effort.
           </p>
-          <ul>
-            <li><strong>Active maintenance</strong> - Regular updates and dependency management</li>
-            <li><strong>Modern compatibility</strong> - Support for latest language versions and dependencies</li>
-            <li><strong>Security patches</strong> - Timely fixes for vulnerabilities</li>
-            <li><strong>Drop-in replacement</strong> - Often API-compatible with minimal migration effort</li>
-          </ul>
-
-          <div class="contribute-box">
-            <h3>Want to Add Your Fork?</h3>
-            <p>
-              Maintaining a fork of an abandoned project? Submit it to be featured here! Check out the
-              <a href="https://github.com/GeorgePearse/AbandonedProjects#readme" target="_blank" rel="noopener noreferrer">
-                README on GitHub
-              </a> for contribution guidelines.
-            </p>
-          </div>
-        </div>
-      </header>
-
-      <main>
-        <div class="comparison-container">
-          {projects.map((project) => (
-            <ComparisonCard
-              original={project.original}
-              maintained={project.maintained}
-            />
-          ))}
         </div>
       </main>
 
       <footer>
         <p>
-          Data last updated: {new Date().toLocaleDateString()}
-        </p>
-        <p>
-          Raising awareness about abandoned dependencies and celebrating the maintainers who keep them alive.
-        </p>
-        <p>
           <a href="https://github.com/GeorgePearse/AbandonedProjects" target="_blank" rel="noopener noreferrer">
             View on GitHub
           </a>
           {' • '}
-          <a href="https://github.com/GeorgePearse/AbandonedProjects#readme" target="_blank" rel="noopener noreferrer">
-            Read the Docs
-          </a>
-          {' • '}
           <a href="https://github.com/GeorgePearse/AbandonedProjects/issues" target="_blank" rel="noopener noreferrer">
-            Submit a Fork
+            Submit a Project
           </a>
         </p>
         <p>
@@ -118,18 +96,18 @@ import projects from '../data/projects.json';
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 4rem 2rem;
   }
 
   header {
     text-align: center;
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
   }
 
   h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 600;
     margin-bottom: 1rem;
     color: #000000;
@@ -137,61 +115,111 @@ import projects from '../data/projects.json';
   }
 
   .subtitle {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     color: #666666;
-    margin-bottom: 3rem;
+    margin-bottom: 0;
     font-weight: 400;
   }
 
-  .warning-box {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 1.5rem;
+  .hero {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .lead {
+    font-size: 1.125rem;
+    color: #4a4a4a;
+    line-height: 1.8;
     max-width: 700px;
     margin: 0 auto;
-    border: none;
   }
 
-  .warning-box p {
-    color: #4a4a4a;
-    line-height: 1.7;
-    font-size: 0.9375rem;
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
   }
 
-  .about-section {
-    max-width: 800px;
-    margin: 4rem auto 0;
-    text-align: left;
-    background: transparent;
-    border: none;
-    padding: 0;
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 2rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
-  .about-section h2 {
-    font-size: 1.25rem;
-    margin: 2.5rem 0 1rem 0;
-    color: #000000;
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
+    border-color: #000000;
+  }
+
+  .card h2 {
+    font-size: 1.5rem;
     font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #000000;
   }
 
-  .about-section h2:first-of-type {
+  .card p {
+    color: #666666;
+    font-size: 0.9375rem;
+    flex-grow: 1;
+  }
+
+  .card .arrow {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    color: #000000;
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  .info-section {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 4rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .info-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem 0;
+    color: #000000;
+  }
+
+  .info-section h2:first-of-type {
     margin-top: 0;
   }
 
-  .about-section p {
+  .info-section p {
     color: #666666;
     line-height: 1.7;
     margin-bottom: 1rem;
     font-size: 0.9375rem;
   }
 
-  .about-section ul {
+  .info-section ul {
     list-style: none;
     padding: 0;
     margin: 1rem 0;
   }
 
-  .about-section li {
+  .info-section li {
     color: #666666;
     line-height: 1.8;
     padding: 0.5rem 0;
@@ -200,7 +228,7 @@ import projects from '../data/projects.json';
     font-size: 0.9375rem;
   }
 
-  .about-section li:before {
+  .info-section li:before {
     content: "•";
     position: absolute;
     left: 0;
@@ -208,61 +236,12 @@ import projects from '../data/projects.json';
     font-weight: normal;
   }
 
-  .contribute-box {
-    background: #f8f9fa;
-    border: none;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-top: 2rem;
-  }
-
-  .contribute-box h3 {
-    margin: 0 0 0.75rem 0;
-    color: #000000;
-    font-size: 1.125rem;
-    font-weight: 600;
-  }
-
-  .contribute-box p {
-    margin: 0;
-    color: #4a4a4a;
-    font-size: 0.9375rem;
-  }
-
-  .contribute-box a {
-    color: #000000;
-    text-decoration: underline;
-    font-weight: 500;
-  }
-
-  .contribute-box a:hover {
-    opacity: 0.7;
-  }
-
-  .projects-title {
-    text-align: center;
-    font-size: 1.75rem;
-    margin: 5rem 0 3rem 0;
-    color: #000000;
-    font-weight: 600;
-  }
-
-  .comparison-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-bottom: 5rem;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   footer {
     text-align: center;
-    padding: 3rem 0 2rem 0;
-    border-top: 1px solid #e5e5e5;
+    padding: 3rem 0 0 0;
     color: #999999;
     font-size: 0.875rem;
+    border-top: 1px solid #e5e5e5;
   }
 
   footer p {
@@ -292,8 +271,8 @@ import projects from '../data/projects.json';
       font-size: 1rem;
     }
 
-    .comparison-container {
-      gap: 1.5rem;
+    .cards {
+      grid-template-columns: 1fr;
     }
   }
 </style>
