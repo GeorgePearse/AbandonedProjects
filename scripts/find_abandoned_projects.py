@@ -110,8 +110,8 @@ class GitHubAbandonedProjectFinder:
             print(f"Error fetching commits for {owner}/{repo}: {e}")
             return None
 
-    def find_active_forks(self, owner: str, repo: str) -> Optional[Dict]:
-        """Find the most active fork of a repository."""
+    def find_active_forks(self, owner: str, repo: str, min_fork_stars: int = 100) -> Optional[Dict]:
+        """Find the most active fork of a repository with minimum star threshold."""
         url = f"https://api.github.com/repos/{owner}/{repo}/forks"
         params = {
             'sort': 'newest',
@@ -123,7 +123,7 @@ class GitHubAbandonedProjectFinder:
             response.raise_for_status()
             forks = response.json()
 
-            # Find most recently updated fork
+            # Find most recently updated fork with minimum stars
             active_forks = []
             cutoff_date = datetime.now() - timedelta(days=180)  # 6 months
 
@@ -132,7 +132,8 @@ class GitHubAbandonedProjectFinder:
                     fork['pushed_at'], '%Y-%m-%dT%H:%M:%SZ'
                 )
 
-                if pushed_at > cutoff_date:
+                # Filter by both activity and star count
+                if pushed_at > cutoff_date and fork['stargazers_count'] >= min_fork_stars:
                     active_forks.append({
                         'name': fork['full_name'],
                         'url': fork['html_url'],
@@ -223,6 +224,7 @@ class GitHubAbandonedProjectFinder:
                 'score': round(score, 2),
                 'active_fork_name': active_fork['name'] if active_fork else '',
                 'active_fork_url': active_fork['url'] if active_fork else '',
+                'active_fork_stars': active_fork['stars'] if active_fork else '',
                 'active_fork_last_commit': active_fork['last_commit'][:10] if active_fork else ''
             }
 
@@ -245,7 +247,7 @@ class GitHubAbandonedProjectFinder:
             fieldnames = [
                 'name', 'owner', 'url', 'stars', 'last_commit',
                 'days_abandoned', 'open_issues', 'score',
-                'active_fork_name', 'active_fork_url', 'active_fork_last_commit'
+                'active_fork_name', 'active_fork_url', 'active_fork_stars', 'active_fork_last_commit'
             ]
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()

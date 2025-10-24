@@ -30,27 +30,48 @@ const records = parse(csvContent, {
             <strong>Search Criteria:</strong> Python repositories with 1,000+ stars, no commits in 1+ year, not archived
           </p>
           <p>
+            <strong>Active Forks:</strong> Forks with 100+ stars and commits in the last 6 months
+          </p>
+          <p>
             <strong>Last Updated:</strong> October 24, 2025
           </p>
         </div>
 
+        <div class="table-controls">
+          <input type="text" id="searchInput" placeholder="Search projects..." />
+          <div class="pagination-info">
+            Showing <span id="startRecord">1</span>-<span id="endRecord">20</span> of <span id="totalRecords">{records.length}</span> projects
+          </div>
+        </div>
+
         <div class="table-container">
-          <table>
+          <table id="projectsTable">
             <thead>
               <tr>
-                <th>Rank</th>
-                <th>Project</th>
-                <th>Stars</th>
-                <th>Last Commit</th>
-                <th>Days Abandoned</th>
-                <th>Open Issues</th>
-                <th>Score</th>
-                <th>Active Fork</th>
+                <th data-sort="rank">Rank <span class="sort-indicator"></span></th>
+                <th data-sort="name">Project <span class="sort-indicator"></span></th>
+                <th data-sort="stars">Stars <span class="sort-indicator"></span></th>
+                <th data-sort="last_commit">Last Commit <span class="sort-indicator"></span></th>
+                <th data-sort="days_abandoned">Days Abandoned <span class="sort-indicator"></span></th>
+                <th data-sort="open_issues">Open Issues <span class="sort-indicator"></span></th>
+                <th data-sort="score">Score <span class="sort-indicator"></span></th>
+                <th data-sort="active_fork_name">Active Fork <span class="sort-indicator"></span></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="tableBody">
               {records.map((record, index) => (
-                <tr>
+                <tr
+                  data-rank={index + 1}
+                  data-name={record.name.toLowerCase()}
+                  data-owner={record.owner.toLowerCase()}
+                  data-stars={record.stars}
+                  data-last-commit={record.last_commit}
+                  data-days-abandoned={record.days_abandoned}
+                  data-open-issues={record.open_issues}
+                  data-score={record.score}
+                  data-fork-name={record.active_fork_name ? record.active_fork_name.toLowerCase() : ''}
+                  data-fork-stars={record.active_fork_stars || 0}
+                >
                   <td class="rank">{index + 1}</td>
                   <td class="project">
                     <a href={record.url} target="_blank" rel="noopener noreferrer">
@@ -66,7 +87,8 @@ const records = parse(csvContent, {
                   <td class="fork">
                     {record.active_fork_name ? (
                       <a href={record.active_fork_url} target="_blank" rel="noopener noreferrer">
-                        ✓ {record.active_fork_name.split('/')[1]}
+                        {record.active_fork_name.split('/')[1]}
+                        <span class="fork-stars">({parseInt(record.active_fork_stars).toLocaleString()} ★)</span>
                       </a>
                     ) : (
                       <span class="no-fork">—</span>
@@ -78,6 +100,12 @@ const records = parse(csvContent, {
           </table>
         </div>
 
+        <div class="pagination-controls">
+          <button id="prevPage" class="page-btn">← Previous</button>
+          <div id="pageNumbers" class="page-numbers"></div>
+          <button id="nextPage" class="page-btn">Next →</button>
+        </div>
+
         <div class="legend">
           <h3>Column Descriptions</h3>
           <dl>
@@ -85,10 +113,205 @@ const records = parse(csvContent, {
             <dd>Calculated as: (stars / 1000) × (days_abandoned / 365) × (1 / (open_issues + 1)). Higher = better candidate.</dd>
 
             <dt>Active Fork</dt>
-            <dd>Most active fork with commits in the last 6 months (if found).</dd>
+            <dd>Most active fork with 100+ stars and commits in the last 6 months. Star count shown in parentheses.</dd>
           </dl>
+          <p style="margin-top: 1rem; font-size: 0.875rem; color: #666;">
+            Click column headers to sort. Use the search box to filter by project name or owner.
+          </p>
         </div>
       </main>
+
+      <script>
+        // Pagination and sorting functionality
+        const ROWS_PER_PAGE = 20;
+        let currentPage = 1;
+        let currentSort = { column: null, ascending: true };
+        let filteredRows = [];
+
+        const tableBody = document.getElementById('tableBody');
+        const allRows = Array.from(tableBody.querySelectorAll('tr'));
+        filteredRows = [...allRows];
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+          const searchTerm = e.target.value.toLowerCase();
+          filteredRows = allRows.filter(row => {
+            const name = row.dataset.name || '';
+            const owner = row.dataset.owner || '';
+            return name.includes(searchTerm) || owner.includes(searchTerm);
+          });
+          currentPage = 1;
+          renderTable();
+        });
+
+        // Sorting functionality
+        document.querySelectorAll('th[data-sort]').forEach(th => {
+          th.style.cursor = 'pointer';
+          th.addEventListener('click', () => {
+            const column = th.dataset.sort;
+
+            if (currentSort.column === column) {
+              currentSort.ascending = !currentSort.ascending;
+            } else {
+              currentSort.column = column;
+              currentSort.ascending = true;
+            }
+
+            // Update sort indicators
+            document.querySelectorAll('.sort-indicator').forEach(indicator => {
+              indicator.textContent = '';
+            });
+            th.querySelector('.sort-indicator').textContent = currentSort.ascending ? ' ↑' : ' ↓';
+
+            // Sort rows
+            filteredRows.sort((a, b) => {
+              let aVal, bVal;
+
+              switch(column) {
+                case 'rank':
+                  aVal = parseInt(a.dataset.rank);
+                  bVal = parseInt(b.dataset.rank);
+                  break;
+                case 'name':
+                  aVal = a.dataset.name;
+                  bVal = b.dataset.name;
+                  break;
+                case 'stars':
+                  aVal = parseInt(a.dataset.stars);
+                  bVal = parseInt(b.dataset.stars);
+                  break;
+                case 'last_commit':
+                  aVal = a.dataset.lastCommit;
+                  bVal = b.dataset.lastCommit;
+                  break;
+                case 'days_abandoned':
+                  aVal = parseInt(a.dataset.daysAbandoned);
+                  bVal = parseInt(b.dataset.daysAbandoned);
+                  break;
+                case 'open_issues':
+                  aVal = parseInt(a.dataset.openIssues);
+                  bVal = parseInt(b.dataset.openIssues);
+                  break;
+                case 'score':
+                  aVal = parseFloat(a.dataset.score);
+                  bVal = parseFloat(b.dataset.score);
+                  break;
+                case 'active_fork_name':
+                  aVal = a.dataset.forkName || '';
+                  bVal = b.dataset.forkName || '';
+                  break;
+              }
+
+              if (typeof aVal === 'string') {
+                return currentSort.ascending ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+              } else {
+                return currentSort.ascending ? aVal - bVal : bVal - aVal;
+              }
+            });
+
+            currentPage = 1;
+            renderTable();
+          });
+        });
+
+        // Pagination functionality
+        function renderTable() {
+          const totalRows = filteredRows.length;
+          const totalPages = Math.ceil(totalRows / ROWS_PER_PAGE);
+          const start = (currentPage - 1) * ROWS_PER_PAGE;
+          const end = start + ROWS_PER_PAGE;
+
+          // Hide all rows
+          allRows.forEach(row => row.style.display = 'none');
+
+          // Show only rows for current page
+          filteredRows.slice(start, end).forEach(row => row.style.display = '');
+
+          // Update pagination info
+          document.getElementById('startRecord').textContent = totalRows > 0 ? start + 1 : 0;
+          document.getElementById('endRecord').textContent = Math.min(end, totalRows);
+          document.getElementById('totalRecords').textContent = totalRows;
+
+          // Update pagination buttons
+          document.getElementById('prevPage').disabled = currentPage === 1;
+          document.getElementById('nextPage').disabled = currentPage >= totalPages;
+
+          // Render page numbers
+          renderPageNumbers(totalPages);
+        }
+
+        function renderPageNumbers(totalPages) {
+          const pageNumbers = document.getElementById('pageNumbers');
+          pageNumbers.innerHTML = '';
+
+          if (totalPages <= 1) return;
+
+          const maxVisible = 5;
+          let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+          let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+          if (endPage - startPage < maxVisible - 1) {
+            startPage = Math.max(1, endPage - maxVisible + 1);
+          }
+
+          if (startPage > 1) {
+            const btn = createPageButton(1);
+            pageNumbers.appendChild(btn);
+            if (startPage > 2) {
+              const ellipsis = document.createElement('span');
+              ellipsis.textContent = '...';
+              ellipsis.className = 'page-ellipsis';
+              pageNumbers.appendChild(ellipsis);
+            }
+          }
+
+          for (let i = startPage; i <= endPage; i++) {
+            const btn = createPageButton(i);
+            pageNumbers.appendChild(btn);
+          }
+
+          if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+              const ellipsis = document.createElement('span');
+              ellipsis.textContent = '...';
+              ellipsis.className = 'page-ellipsis';
+              pageNumbers.appendChild(ellipsis);
+            }
+            const btn = createPageButton(totalPages);
+            pageNumbers.appendChild(btn);
+          }
+        }
+
+        function createPageButton(pageNum) {
+          const btn = document.createElement('button');
+          btn.textContent = pageNum;
+          btn.className = 'page-num' + (pageNum === currentPage ? ' active' : '');
+          btn.addEventListener('click', () => {
+            currentPage = pageNum;
+            renderTable();
+          });
+          return btn;
+        }
+
+        document.getElementById('prevPage').addEventListener('click', () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderTable();
+          }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+          const totalPages = Math.ceil(filteredRows.length / ROWS_PER_PAGE);
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderTable();
+          }
+        });
+
+        // Initial render
+        renderTable();
+      </script>
 
       <footer>
         <p>
@@ -275,6 +498,115 @@ const records = parse(csvContent, {
 
   .no-fork {
     color: #cccccc;
+  }
+
+  .fork-stars {
+    font-size: 0.8125rem;
+    color: #999999;
+    margin-left: 0.25rem;
+  }
+
+  .table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  #searchInput {
+    flex: 1;
+    max-width: 400px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: border-color 0.2s ease;
+  }
+
+  #searchInput:focus {
+    outline: none;
+    border-color: #000000;
+  }
+
+  .pagination-info {
+    font-size: 0.875rem;
+    color: #666666;
+  }
+
+  .sort-indicator {
+    color: #999999;
+    font-size: 0.75rem;
+  }
+
+  th[data-sort]:hover {
+    background: #f5f5f5;
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+  }
+
+  .page-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e5e5e5;
+    background: #ffffff;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #000000;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .page-btn:hover:not(:disabled) {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+  }
+
+  .page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .page-numbers {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+
+  .page-num {
+    min-width: 2.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e5e5e5;
+    background: #ffffff;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #666666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .page-num:hover {
+    background: #fafafa;
+    border-color: #000000;
+  }
+
+  .page-num.active {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+  }
+
+  .page-ellipsis {
+    padding: 0.5rem;
+    color: #999999;
+    font-size: 0.875rem;
   }
 
   .legend {
