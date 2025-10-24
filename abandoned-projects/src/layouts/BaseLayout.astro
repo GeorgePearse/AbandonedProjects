@@ -65,8 +65,9 @@ const { title, description } = Astro.props;
     margin: 0 auto;
     padding: 1rem 2rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    position: relative;
   }
 
   .nav-logo {
@@ -78,6 +79,8 @@ const { title, description } = Astro.props;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    position: absolute;
+    left: 2rem;
   }
 
   .home-icon {
@@ -108,6 +111,7 @@ const { title, description } = Astro.props;
 
     .nav-logo {
       font-size: 1rem;
+      left: 1rem;
     }
 
     .nav-links {

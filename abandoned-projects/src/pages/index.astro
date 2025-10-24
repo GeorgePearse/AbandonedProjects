@@ -9,6 +9,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <div class="container">
       <header>
         <h1>Abandoned Projects</h1>
+        <p class="tagline">
+          The home for abandoned projects. Abandoned no more.
+        </p>
         <p class="subtitle">
           Documenting unmaintained open-source projects and their maintained alternatives
         </p>
@@ -17,24 +20,63 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <main>
         <div class="hero">
           <p class="lead">
-            Popular open-source libraries sometimes become abandoned, leaving users with security vulnerabilities
-            and compatibility issues. This site documents these projects and highlights actively maintained forks
-            that provide drop-in replacements.
+            We've all been there. You're building something great, relying on a trusted library, and then... silence.
+            No updates. No security patches. No response to issues. The project is abandoned, and you're left holding
+            the bag with mounting technical debt and security risks.
           </p>
-        </div>
 
-        <div class="cards">
-          <a href="/AbandonedProjects/projects" class="card">
-            <h2>Featured Projects</h2>
-            <p>Curated side-by-side comparisons of abandoned projects and their actively maintained forks</p>
-            <span class="arrow">→</span>
-          </a>
+          <p class="lead">
+            Take MMDetection. Still the most powerful object detection framework out there. But try installing it today
+            and you'll hit a wall of dependency conflicts and broken builds. It hasn't seen a meaningful update in about
+            a year. Python moves forward. PyTorch releases new versions. Your environment breaks. The only solution?
+            Fork it internally, patch it yourself, and hope you can keep up with the ecosystem. That's not development—that's
+            maintenance hell.
+          </p>
 
-          <a href="/AbandonedProjects/candidates" class="card">
-            <h2>Candidate Projects</h2>
-            <p>Browse 10+ abandoned Python projects discovered via automated GitHub search</p>
-            <span class="arrow">→</span>
-          </a>
+          <p class="lead">
+            And MMDetection isn't unique. It's everywhere. Utility libraries with tens of thousands of dependents. Testing
+            frameworks entire teams rely on. CLI tools that have become part of workflows. All going silent, one by one.
+            The problem isn't just inconvenience—it's security vulnerabilities that never get patched, breaking changes
+            in dependencies that never get addressed, and teams forced to choose between technical debt or painful migrations.
+          </p>
+
+          <p class="lead">
+            Here's the irony: the Python ecosystem has never been friendlier. Astral's UV package manager has eliminated
+            most of the dependency hell that used to plague Python development. Installation is fast. Environments are clean.
+            Conflicts are rare. The tooling that made complex installation processes a nightmare five years ago? Largely solved.
+            Which means maintaining projects like MMDetection shouldn't be the painful slog it once was. The infrastructure
+            exists. The tools exist. What's missing is active maintenance.
+          </p>
+
+          <p class="lead">
+            And it's not just package management. LLMs have made code modernization almost trivial. Want to convert an
+            entire codebase to static typing? Feed it to Claude or GPT-4 and you'll have type hints across thousands of
+            lines in minutes. The result? Radically fewer bugs, dramatically better readability, and IDE autocomplete that
+            actually works. Tasks that used to take weeks of careful refactoring now take an afternoon. The barrier to
+            bringing old projects up to modern standards has collapsed.
+          </p>
+
+          <p class="lead">
+            But here's the thing: abandoned doesn't have to mean dead. The open-source community has a habit of
+            picking up where others leave off. Forks emerge. Maintainers step up. Projects get a second life.
+            The problem? Finding these actively maintained alternatives is like searching for a needle in a haystack
+            of 100 million GitHub repositories.
+          </p>
+
+          <p class="lead">
+            That's where this site comes in. We document popular projects that have gone quiet—measured by lack of
+            commits, unaddressed security vulnerabilities, and years of radio silence—and match them with their
+            maintained alternatives. Projects that offer drop-in replacements, active security patches, and modern
+            compatibility.
+          </p>
+
+          <p class="lead">
+            This is a community effort. Browse our curated <a href="/AbandonedProjects/projects" class="inline-link">Projects</a>
+            for verified comparisons, check out the <a href="/AbandonedProjects/candidates" class="inline-link">Candidates</a>
+            discovered through automated analysis, and help us expand the catalog. Found an abandoned project? Know of a
+            great maintained fork? <a href="https://github.com/GeorgePearse/AbandonedProjects/issues" target="_blank" rel="noopener noreferrer" class="inline-link">Submit it</a>.
+            Together, we're making sure abandoned projects stay abandoned no more.
+          </p>
         </div>
 
         <div class="info-section">
@@ -94,6 +136,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     letter-spacing: -0.02em;
   }
 
+  .tagline {
+    font-size: 1.5rem;
+    color: #000000;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-style: italic;
+  }
+
   .subtitle {
     font-size: 1.25rem;
     color: #666666;
@@ -111,59 +161,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: #4a4a4a;
     line-height: 1.8;
     max-width: 700px;
-    margin: 0 auto;
+    margin: 0 auto 1.5rem auto;
   }
 
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 4rem;
+  .lead:last-child {
+    margin-bottom: 0;
   }
 
-  .card {
-    background: #ffffff;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    padding: 2rem;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
-    border-color: #000000;
-  }
-
-  .card h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
+  .inline-link {
     color: #000000;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease;
   }
 
-  .card p {
-    color: #666666;
-    font-size: 0.9375rem;
-    flex-grow: 1;
-  }
-
-  .card .arrow {
-    display: inline-block;
-    margin-top: 1rem;
-    font-size: 1.5rem;
-    color: #000000;
-    transition: transform 0.2s ease;
-  }
-
-  .card:hover .arrow {
-    transform: translateX(4px);
+  .inline-link:hover {
+    opacity: 0.7;
   }
 
   .info-section {
@@ -247,12 +262,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       font-size: 2rem;
     }
 
-    .subtitle {
-      font-size: 1rem;
+    .tagline {
+      font-size: 1.125rem;
     }
 
-    .cards {
-      grid-template-columns: 1fr;
+    .subtitle {
+      font-size: 1rem;
     }
   }
 </style>
