@@ -1,26 +1,16 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 import ComparisonCard from '../components/ComparisonCard.astro';
 import projects from '../data/projects.json';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Featured Projects - Abandoned Projects</title>
-    <meta name="description" content="Side-by-side comparison of abandoned projects and their actively maintained forks." />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <nav class="breadcrumb">
-          <a href="/AbandonedProjects/">Home</a> /
-          <a href="/AbandonedProjects/projects">Projects</a> /
-          <a href="/AbandonedProjects/candidates">Candidates</a>
-        </nav>
-        <h1>Featured Projects</h1>
+<BaseLayout
+  title="Featured Projects - Abandoned Projects"
+  description="Side-by-side comparison of abandoned projects and their actively maintained forks."
+>
+  <div class="container">
+    <header>
+      <h1>Featured Projects</h1>
         <p class="subtitle">
           Curated comparisons of abandoned projects and their maintained alternatives
         </p>
@@ -62,24 +52,9 @@ import projects from '../data/projects.json';
         </p>
       </footer>
     </div>
-  </body>
-</html>
+</BaseLayout>
 
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #f0f7ff;
-    color: #1a1a1a;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
   .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -89,20 +64,6 @@ import projects from '../data/projects.json';
   header {
     text-align: center;
     margin-bottom: 3rem;
-  }
-
-  .breadcrumb {
-    margin-bottom: 2rem;
-    font-size: 0.875rem;
-  }
-
-  .breadcrumb a {
-    color: #666666;
-    text-decoration: none;
-  }
-
-  .breadcrumb a:hover {
-    color: #000000;
   }
 
   h1 {
