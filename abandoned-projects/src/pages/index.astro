@@ -1,5 +1,5 @@
 ---
-import ProjectCard from '../components/ProjectCard.astro';
+import ComparisonCard from '../components/ComparisonCard.astro';
 import projects from '../data/projects.json';
 ---
 
@@ -9,70 +9,67 @@ import projects from '../data/projects.json';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Abandoned Projects - Security Risks & Compatibility Issues</title>
-    <meta name="description" content="A curated list of abandoned GitHub projects that pose security risks and package compatibility problems." />
+    <title>Abandoned Projects - Find Maintained Alternatives</title>
+    <meta name="description" content="Documenting abandoned open-source projects and their actively maintained forks. Find drop-in replacements with modern compatibility and security updates." />
   </head>
   <body>
     <div class="container">
       <header>
         <h1>⚠️ Abandoned Projects</h1>
         <p class="subtitle">
-          A curated showcase of unmaintained GitHub projects that pose security risks and package compatibility issues
+          Documenting unmaintained open-source projects and their maintained alternatives
         </p>
 
         <div class="warning-box">
           <p>
-            These projects are either officially deprecated, abandoned by maintainers, or no longer receiving security updates.
-            Using them in production can lead to security vulnerabilities, compatibility problems, and maintenance headaches.
+            Popular open-source libraries sometimes become abandoned, leaving users with security vulnerabilities
+            and compatibility issues. This site documents these projects and highlights actively maintained forks
+            that provide drop-in replacements.
           </p>
         </div>
 
         <div class="about-section">
-          <h2>🎯 Purpose</h2>
+          <h2>🎯 Why This Matters</h2>
           <p>
-            This project highlights popular open-source packages that have been abandoned, deprecated, or left unmaintained.
-            When developers continue to use these packages, they expose their projects to:
+            When widely-used libraries stop receiving updates, projects depending on them face:
           </p>
           <ul>
             <li><strong>Security vulnerabilities</strong> - No patches for newly discovered exploits</li>
-            <li><strong>Compatibility issues</strong> - Breaking changes with modern tooling and dependencies</li>
-            <li><strong>Technical debt</strong> - Harder to maintain and migrate away from over time</li>
-            <li><strong>Supply chain risks</strong> - Potential targets for malicious takeovers</li>
+            <li><strong>Compatibility issues</strong> - Breaking changes with modern dependencies (e.g., NumPy 2.x, Python 3.13+)</li>
+            <li><strong>Technical debt</strong> - Increasingly difficult to maintain and migrate away from</li>
+            <li><strong>Supply chain risks</strong> - Unmaintained packages can become targets for malicious takeovers</li>
           </ul>
 
-          <h2>🚀 Features</h2>
+          <h2>✨ The Solution</h2>
+          <p>
+            Community-maintained forks can breathe new life into abandoned projects. These forks provide:
+          </p>
           <ul>
-            <li><strong>Visual Card Layout</strong> - Easy-to-scan cards displaying project information</li>
-            <li><strong>Last Commit Tracking</strong> - Shows how long each project has been abandoned</li>
-            <li><strong>Risk Assessment</strong> - Explains why each abandoned project matters</li>
-            <li><strong>GitHub Integration</strong> - Direct links to repositories with star counts</li>
-            <li><strong>Responsive Design</strong> - Works seamlessly on mobile and desktop</li>
+            <li><strong>Active maintenance</strong> - Regular updates and dependency management</li>
+            <li><strong>Modern compatibility</strong> - Support for latest language versions and dependencies</li>
+            <li><strong>Security patches</strong> - Timely fixes for vulnerabilities</li>
+            <li><strong>Drop-in replacement</strong> - Often API-compatible with minimal migration effort</li>
           </ul>
 
           <div class="contribute-box">
-            <h3>🤝 Want to Contribute?</h3>
+            <h3>🤝 Want to Add Your Fork?</h3>
             <p>
-              Know of an abandoned project that should be listed? Check out the
+              Maintaining a fork of an abandoned project? Submit it to be featured here! Check out the
               <a href="https://github.com/GeorgePearse/AbandonedProjects#readme" target="_blank" rel="noopener noreferrer">
                 README on GitHub
-              </a> for contribution guidelines and add it to the list!
+              </a> for contribution guidelines.
             </p>
           </div>
         </div>
       </header>
 
       <main>
-        <h2 class="projects-title">📊 Featured Abandoned Projects</h2>
-        <div class="projects-grid">
+        <h2 class="projects-title">📊 Abandoned vs Maintained</h2>
+        <div class="comparison-container">
           {projects.map((project) => (
-            <ProjectCard
-              name={project.name}
-              repo={project.repo}
-              url={project.url}
-              description={project.description}
-              lastCommit={project.lastCommit}
-              stars={project.stars}
-              reason={project.reason}
+            <ComparisonCard
+              original={project.original}
+              maintained={project.maintained}
             />
           ))}
         </div>
@@ -83,7 +80,7 @@ import projects from '../data/projects.json';
           Data last updated: {new Date().toLocaleDateString()}
         </p>
         <p>
-          Built to raise awareness about abandoned dependencies in the JavaScript ecosystem.
+          Raising awareness about abandoned dependencies and celebrating the maintainers who keep them alive.
         </p>
         <p>
           <a href="https://github.com/GeorgePearse/AbandonedProjects" target="_blank" rel="noopener noreferrer">
@@ -95,7 +92,7 @@ import projects from '../data/projects.json';
           </a>
           {' • '}
           <a href="https://github.com/GeorgePearse/AbandonedProjects/issues" target="_blank" rel="noopener noreferrer">
-            Report an Issue
+            Submit a Fork
           </a>
         </p>
         <p>
@@ -276,11 +273,14 @@ import projects from '../data/projects.json';
     color: var(--text-primary);
   }
 
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  .comparison-container {
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
     margin-bottom: 3rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   footer {
@@ -319,8 +319,7 @@ import projects from '../data/projects.json';
       font-size: 1rem;
     }
 
-    .projects-grid {
-      grid-template-columns: 1fr;
+    .comparison-container {
       gap: 1.5rem;
     }
   }

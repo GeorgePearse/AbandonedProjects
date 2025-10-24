@@ -1,0 +1,299 @@
+---
+import Sparkline from './Sparkline.astro';
+
+interface ProjectData {
+  name: string;
+  repo: string;
+  url: string;
+  description: string;
+  lastCommit: string;
+  stars: number;
+  reason: string;
+  commitActivity: number[];
+}
+
+interface Props {
+  original: ProjectData;
+  maintained: ProjectData;
+}
+
+const { original, maintained } = Astro.props;
+
+// Calculate how long ago the last commit was
+function getTimeAgo(dateString: string) {
+  const commitDate = new Date(dateString);
+  const now = new Date();
+  const daysSince = Math.floor((now.getTime() - commitDate.getTime()) / (1000 * 60 * 60 * 24));
+  const yearsSince = Math.floor(daysSince / 365);
+  const monthsSince = Math.floor(daysSince / 30);
+
+  if (yearsSince > 0) {
+    return `${yearsSince} year${yearsSince > 1 ? 's' : ''} ago`;
+  } else if (monthsSince > 0) {
+    return `${monthsSince} month${monthsSince > 1 ? 's' : ''} ago`;
+  } else {
+    return `${daysSince} day${daysSince > 1 ? 's' : ''} ago`;
+  }
+}
+
+const originalTimeAgo = getTimeAgo(original.lastCommit);
+const maintainedTimeAgo = getTimeAgo(maintained.lastCommit);
+---
+
+<article class="comparison-card">
+  <div class="comparison-columns">
+    <!-- Original Abandoned Project -->
+    <div class="project-column abandoned">
+      <div class="column-label">❌ Abandoned</div>
+      <div class="card-header">
+        <h2>
+          <a href={original.url} target="_blank" rel="noopener noreferrer">
+            {original.name}
+          </a>
+        </h2>
+        <div class="meta">
+          <span class="repo">{original.repo}</span>
+          <span class="stars">⭐ {original.stars.toLocaleString()}</span>
+        </div>
+      </div>
+
+      <p class="description">{original.description}</p>
+
+      <div class="status abandoned-status">
+        <div class="last-commit">
+          <span class="label">Last commit:</span>
+          <span class="date" title={original.lastCommit}>{originalTimeAgo}</span>
+        </div>
+      </div>
+
+      <Sparkline
+        data={original.commitActivity}
+        label="Last 12 months"
+        type="abandoned"
+      />
+
+      <div class="reason">
+        <span class="label">⚠️ Status:</span>
+        <p>{original.reason}</p>
+      </div>
+    </div>
+
+    <!-- Arrow Separator -->
+    <div class="arrow-separator">
+      <span class="arrow">→</span>
+    </div>
+
+    <!-- Maintained Fork -->
+    <div class="project-column maintained">
+      <div class="column-label maintained-label">✅ Maintained Alternative</div>
+      <div class="card-header">
+        <h2>
+          <a href={maintained.url} target="_blank" rel="noopener noreferrer">
+            {maintained.name}
+          </a>
+        </h2>
+        <div class="meta">
+          <span class="repo">{maintained.repo}</span>
+          <span class="stars">⭐ {maintained.stars.toLocaleString()}</span>
+        </div>
+      </div>
+
+      <p class="description">{maintained.description}</p>
+
+      <div class="status maintained-status">
+        <div class="last-commit">
+          <span class="label">Last commit:</span>
+          <span class="date active" title={maintained.lastCommit}>{maintainedTimeAgo}</span>
+        </div>
+      </div>
+
+      <Sparkline
+        data={maintained.commitActivity}
+        label="Last 12 months"
+        type="maintained"
+      />
+
+      <div class="reason">
+        <span class="label">✨ Benefits:</span>
+        <p>{maintained.reason}</p>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .comparison-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .comparison-columns {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .project-column {
+    position: relative;
+  }
+
+  .column-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+    background: var(--danger);
+    color: white;
+  }
+
+  .maintained-label {
+    background: #10b981;
+  }
+
+  .arrow-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3rem;
+  }
+
+  .arrow {
+    font-size: 3rem;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  .card-header {
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  h2 a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  h2 a:hover {
+    color: var(--accent);
+  }
+
+  .meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+  }
+
+  .repo {
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+
+  .stars {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .description {
+    color: var(--text-secondary);
+    margin: 1rem 0;
+    line-height: 1.6;
+    min-height: 4rem;
+  }
+
+  .status {
+    padding: 0.75rem;
+    background: var(--status-bg);
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .abandoned-status {
+    border: 1px solid var(--danger);
+  }
+
+  .maintained-status {
+    border: 1px solid #10b981;
+  }
+
+  .last-commit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+  }
+
+  .last-commit .label {
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .last-commit .date {
+    color: var(--danger);
+    font-weight: 600;
+  }
+
+  .last-commit .date.active {
+    color: #10b981;
+  }
+
+  .reason {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .reason .label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .abandoned .reason .label {
+    color: var(--danger);
+  }
+
+  .maintained .reason .label {
+    color: #10b981;
+  }
+
+  .reason p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 968px) {
+    .comparison-columns {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .arrow-separator {
+      padding: 0;
+      transform: rotate(90deg);
+    }
+
+    .arrow {
+      font-size: 2rem;
+    }
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+interface Props {
+  data: number[];
+  label: string;
+  type: 'abandoned' | 'maintained';
+}
+
+const { data, label, type } = Astro.props;
+
+// Calculate dimensions
+const width = 200;
+const height = 40;
+const padding = 2;
+const barWidth = (width - padding * (data.length - 1)) / data.length;
+
+// Find max value for scaling
+const maxValue = Math.max(...data, 1); // Minimum 1 to avoid division by zero
+
+// Generate bar heights
+const bars = data.map((value, index) => {
+  const barHeight = (value / maxValue) * (height - 4);
+  const x = index * (barWidth + padding);
+  const y = height - barHeight - 2;
+  return { x, y, height: barHeight, value };
+});
+
+const totalCommits = data.reduce((sum, val) => sum + val, 0);
+---
+
+<div class={`sparkline-container ${type}`}>
+  <div class="sparkline-header">
+    <span class="sparkline-label">{label}</span>
+    <span class="sparkline-total">{totalCommits} commits</span>
+  </div>
+  <svg
+    width={width}
+    height={height}
+    viewBox={`0 0 ${width} ${height}`}
+    class="sparkline-svg"
+    role="img"
+    aria-label={`Commit activity: ${totalCommits} commits in last 12 months`}
+  >
+    {bars.map((bar, index) => (
+      <rect
+        x={bar.x}
+        y={bar.y}
+        width={barWidth}
+        height={bar.height}
+        class="sparkline-bar"
+        data-value={bar.value}
+      >
+        <title>Month {index + 1}: {bar.value} commits</title>
+      </rect>
+    ))}
+  </svg>
+</div>
+
+<style>
+  .sparkline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .sparkline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sparkline-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+  }
+
+  .sparkline-total {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .abandoned .sparkline-total {
+    color: var(--danger);
+  }
+
+  .maintained .sparkline-total {
+    color: #10b981;
+  }
+
+  .sparkline-svg {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    background: var(--status-bg);
+    padding: 2px;
+  }
+
+  .sparkline-bar {
+    transition: opacity 0.2s ease;
+  }
+
+  .abandoned .sparkline-bar {
+    fill: var(--danger);
+    opacity: 0.6;
+  }
+
+  .maintained .sparkline-bar {
+    fill: #10b981;
+    opacity: 0.8;
+  }
+
+  .sparkline-bar:hover {
+    opacity: 1;
+  }
+</style>
