@@ -71,31 +71,26 @@ const totalCommits = data.reduce((sum, val) => sum + val, 0);
 
   .sparkline-label {
     font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-secondary);
+    font-weight: 500;
+    color: #999999;
   }
 
   .sparkline-total {
     font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-  }
-
-  .abandoned .sparkline-total {
-    color: var(--danger);
+    font-weight: 500;
+    color: #666666;
   }
 
   .maintained .sparkline-total {
-    color: #10b981;
+    color: #000000;
+    font-weight: 600;
   }
 
   .sparkline-svg {
     width: 100%;
-    height: 40px;
+    height: 32px;
     border-radius: 4px;
-    background: var(--status-bg);
+    background: #fafafa;
     padding: 2px;
   }
 
@@ -104,12 +99,12 @@ const totalCommits = data.reduce((sum, val) => sum + val, 0);
   }
 
   .abandoned .sparkline-bar {
-    fill: var(--danger);
-    opacity: 0.6;
+    fill: #d0d0d0;
+    opacity: 0.5;
   }
 
   .maintained .sparkline-bar {
-    fill: #10b981;
+    fill: #000000;
     opacity: 0.8;
   }
 

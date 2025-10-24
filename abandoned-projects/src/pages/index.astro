@@ -15,7 +15,7 @@ import projects from '../data/projects.json';
   <body>
     <div class="container">
       <header>
-        <h1>⚠️ Abandoned Projects</h1>
+        <h1>Abandoned Projects</h1>
         <p class="subtitle">
           Documenting unmaintained open-source projects and their maintained alternatives
         </p>
@@ -29,7 +29,7 @@ import projects from '../data/projects.json';
         </div>
 
         <div class="about-section">
-          <h2>🎯 Why This Matters</h2>
+          <h2>Why This Matters</h2>
           <p>
             When widely-used libraries stop receiving updates, projects depending on them face:
           </p>
@@ -40,7 +40,7 @@ import projects from '../data/projects.json';
             <li><strong>Supply chain risks</strong> - Unmaintained packages can become targets for malicious takeovers</li>
           </ul>
 
-          <h2>✨ The Solution</h2>
+          <h2>The Solution</h2>
           <p>
             Community-maintained forks can breathe new life into abandoned projects. These forks provide:
           </p>
@@ -52,7 +52,7 @@ import projects from '../data/projects.json';
           </ul>
 
           <div class="contribute-box">
-            <h3>🤝 Want to Add Your Fork?</h3>
+            <h3>Want to Add Your Fork?</h3>
             <p>
               Maintaining a fork of an abandoned project? Submit it to be featured here! Check out the
               <a href="https://github.com/GeorgePearse/AbandonedProjects#readme" target="_blank" rel="noopener noreferrer">
@@ -64,7 +64,7 @@ import projects from '../data/projects.json';
       </header>
 
       <main>
-        <h2 class="projects-title">📊 Abandoned vs Maintained</h2>
+        <h2 class="projects-title">Comparison</h2>
         <div class="comparison-container">
           {projects.map((project) => (
             <ComparisonCard
@@ -104,36 +104,6 @@ import projects from '../data/projects.json';
 </html>
 
 <style>
-  :root {
-    --bg-primary: #0d1117;
-    --bg-secondary: #161b22;
-    --card-bg: #1c2128;
-    --card-border: #30363d;
-    --text-primary: #e6edf3;
-    --text-secondary: #8b949e;
-    --accent: #58a6ff;
-    --danger: #f85149;
-    --status-bg: #161b22;
-    --warning-bg: #1f2937;
-    --warning-border: #f59e0b;
-  }
-
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg-primary: #ffffff;
-      --bg-secondary: #f6f8fa;
-      --card-bg: #ffffff;
-      --card-border: #d0d7de;
-      --text-primary: #1f2328;
-      --text-secondary: #57606a;
-      --accent: #0969da;
-      --danger: #cf222e;
-      --status-bg: #f6f8fa;
-      --warning-bg: #fff8e6;
-      --warning-border: #f59e0b;
-    }
-  }
-
   * {
     box-sizing: border-box;
     margin: 0;
@@ -141,9 +111,9 @@ import projects from '../data/projects.json';
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
-    background: var(--bg-primary);
-    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
     line-height: 1.6;
     min-height: 100vh;
   }
@@ -151,58 +121,58 @@ import projects from '../data/projects.json';
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 4rem 2rem;
   }
 
   header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
   }
 
   h1 {
-    font-size: 3rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 600;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--accent), var(--danger));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #000000;
+    letter-spacing: -0.02em;
   }
 
   .subtitle {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
+    font-size: 1.125rem;
+    color: #666666;
+    margin-bottom: 3rem;
+    font-weight: 400;
   }
 
   .warning-box {
-    background: var(--warning-bg);
-    border: 2px solid var(--warning-border);
-    border-radius: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
     padding: 1.5rem;
-    max-width: 800px;
+    max-width: 700px;
     margin: 0 auto;
+    border: none;
   }
 
   .warning-box p {
-    color: var(--text-primary);
+    color: #4a4a4a;
     line-height: 1.7;
+    font-size: 0.9375rem;
   }
 
   .about-section {
-    max-width: 900px;
-    margin: 3rem auto 0;
+    max-width: 800px;
+    margin: 4rem auto 0;
     text-align: left;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 2rem;
+    background: transparent;
+    border: none;
+    padding: 0;
   }
 
   .about-section h2 {
-    font-size: 1.5rem;
-    margin: 2rem 0 1rem 0;
-    color: var(--text-primary);
+    font-size: 1.25rem;
+    margin: 2.5rem 0 1rem 0;
+    color: #000000;
+    font-weight: 600;
   }
 
   .about-section h2:first-of-type {
@@ -210,9 +180,10 @@ import projects from '../data/projects.json';
   }
 
   .about-section p {
-    color: var(--text-secondary);
+    color: #666666;
     line-height: 1.7;
     margin-bottom: 1rem;
+    font-size: 0.9375rem;
   }
 
   .about-section ul {
@@ -222,24 +193,25 @@ import projects from '../data/projects.json';
   }
 
   .about-section li {
-    color: var(--text-secondary);
+    color: #666666;
     line-height: 1.8;
     padding: 0.5rem 0;
     padding-left: 1.5rem;
     position: relative;
+    font-size: 0.9375rem;
   }
 
   .about-section li:before {
-    content: "→";
+    content: "•";
     position: absolute;
     left: 0;
-    color: var(--accent);
-    font-weight: bold;
+    color: #000000;
+    font-weight: normal;
   }
 
   .contribute-box {
-    background: var(--status-bg);
-    border: 2px solid var(--accent);
+    background: #f8f9fa;
+    border: none;
     border-radius: 8px;
     padding: 1.5rem;
     margin-top: 2rem;
@@ -247,37 +219,40 @@ import projects from '../data/projects.json';
 
   .contribute-box h3 {
     margin: 0 0 0.75rem 0;
-    color: var(--accent);
-    font-size: 1.25rem;
+    color: #000000;
+    font-size: 1.125rem;
+    font-weight: 600;
   }
 
   .contribute-box p {
     margin: 0;
-    color: var(--text-primary);
+    color: #4a4a4a;
+    font-size: 0.9375rem;
   }
 
   .contribute-box a {
-    color: var(--accent);
+    color: #000000;
     text-decoration: underline;
     font-weight: 500;
   }
 
   .contribute-box a:hover {
-    color: var(--text-primary);
+    opacity: 0.7;
   }
 
   .projects-title {
     text-align: center;
-    font-size: 2rem;
-    margin: 4rem 0 2rem 0;
-    color: var(--text-primary);
+    font-size: 1.75rem;
+    margin: 5rem 0 3rem 0;
+    color: #000000;
+    font-weight: 600;
   }
 
   .comparison-container {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
@@ -285,9 +260,9 @@ import projects from '../data/projects.json';
 
   footer {
     text-align: center;
-    padding: 2rem 0;
-    border-top: 1px solid var(--card-border);
-    color: var(--text-secondary);
+    padding: 3rem 0 2rem 0;
+    border-top: 1px solid #e5e5e5;
+    color: #999999;
     font-size: 0.875rem;
   }
 
@@ -296,19 +271,18 @@ import projects from '../data/projects.json';
   }
 
   footer a {
-    color: var(--accent);
+    color: #666666;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: opacity 0.2s ease;
   }
 
   footer a:hover {
-    color: var(--text-primary);
-    text-decoration: underline;
+    opacity: 0.7;
   }
 
   @media (max-width: 768px) {
     .container {
-      padding: 1rem;
+      padding: 2rem 1rem;
     }
 
     h1 {
