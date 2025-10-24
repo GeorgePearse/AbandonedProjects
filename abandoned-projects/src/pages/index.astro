@@ -1,0 +1,181 @@
+---
+import ProjectCard from '../components/ProjectCard.astro';
+import projects from '../data/projects.json';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Abandoned Projects - Security Risks & Compatibility Issues</title>
+    <meta name="description" content="A curated list of abandoned GitHub projects that pose security risks and package compatibility problems." />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>⚠️ Abandoned Projects</h1>
+        <p class="subtitle">
+          Highlighting unmaintained GitHub projects that pose security risks and compatibility issues
+        </p>
+        <div class="warning-box">
+          <p>
+            These projects are either officially deprecated, abandoned by maintainers, or no longer receiving security updates.
+            Using them in production can lead to security vulnerabilities, compatibility problems, and maintenance headaches.
+          </p>
+        </div>
+      </header>
+
+      <main>
+        <div class="projects-grid">
+          {projects.map((project) => (
+            <ProjectCard
+              name={project.name}
+              repo={project.repo}
+              url={project.url}
+              description={project.description}
+              lastCommit={project.lastCommit}
+              stars={project.stars}
+              reason={project.reason}
+            />
+          ))}
+        </div>
+      </main>
+
+      <footer>
+        <p>
+          Data last updated: {new Date().toLocaleDateString()}
+        </p>
+        <p>
+          Built to raise awareness about abandoned dependencies in the JavaScript ecosystem.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --card-bg: #1c2128;
+    --card-border: #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --accent: #58a6ff;
+    --danger: #f85149;
+    --status-bg: #161b22;
+    --warning-bg: #1f2937;
+    --warning-border: #f59e0b;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f6f8fa;
+      --card-bg: #ffffff;
+      --card-border: #d0d7de;
+      --text-primary: #1f2328;
+      --text-secondary: #57606a;
+      --accent: #0969da;
+      --danger: #cf222e;
+      --status-bg: #f6f8fa;
+      --warning-bg: #fff8e6;
+      --warning-border: #f59e0b;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--accent), var(--danger));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .warning-box {
+    background: var(--warning-bg);
+    border: 2px solid var(--warning-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .warning-box p {
+    color: var(--text-primary);
+    line-height: 1.7;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+
+  footer p {
+    margin: 0.5rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

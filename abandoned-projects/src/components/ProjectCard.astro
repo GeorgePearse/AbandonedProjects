@@ -1,0 +1,162 @@
+---
+interface Props {
+  name: string;
+  repo: string;
+  url: string;
+  description: string;
+  lastCommit: string;
+  stars: number;
+  reason: string;
+}
+
+const { name, repo, url, description, lastCommit, stars, reason } = Astro.props;
+
+// Calculate how long ago the last commit was
+const lastCommitDate = new Date(lastCommit);
+const now = new Date();
+const daysSince = Math.floor((now.getTime() - lastCommitDate.getTime()) / (1000 * 60 * 60 * 24));
+const yearsSince = Math.floor(daysSince / 365);
+const monthsSince = Math.floor(daysSince / 30);
+
+let timeAgo = '';
+if (yearsSince > 0) {
+  timeAgo = `${yearsSince} year${yearsSince > 1 ? 's' : ''} ago`;
+} else if (monthsSince > 0) {
+  timeAgo = `${monthsSince} month${monthsSince > 1 ? 's' : ''} ago`;
+} else {
+  timeAgo = `${daysSince} day${daysSince > 1 ? 's' : ''} ago`;
+}
+---
+
+<article class="project-card">
+  <div class="card-header">
+    <h2>
+      <a href={url} target="_blank" rel="noopener noreferrer">
+        {name}
+      </a>
+    </h2>
+    <div class="meta">
+      <span class="repo">{repo}</span>
+      <span class="stars">⭐ {stars.toLocaleString()}</span>
+    </div>
+  </div>
+
+  <p class="description">{description}</p>
+
+  <div class="status">
+    <div class="last-commit">
+      <span class="label">Last commit:</span>
+      <span class="date" title={lastCommit}>{timeAgo}</span>
+    </div>
+  </div>
+
+  <div class="reason">
+    <span class="label">⚠️ Why it matters:</span>
+    <p>{reason}</p>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent);
+  }
+
+  .card-header {
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  h2 a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  h2 a:hover {
+    color: var(--accent);
+  }
+
+  .meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+  }
+
+  .repo {
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+
+  .stars {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .description {
+    color: var(--text-secondary);
+    margin: 1rem 0;
+    line-height: 1.6;
+  }
+
+  .status {
+    padding: 0.75rem;
+    background: var(--status-bg);
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .last-commit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+  }
+
+  .last-commit .label {
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .last-commit .date {
+    color: var(--danger);
+    font-weight: 600;
+  }
+
+  .reason {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .reason .label {
+    font-weight: 600;
+    color: var(--danger);
+    font-size: 0.875rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .reason p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+</style>

@@ -1,0 +1,92 @@
+[
+  {
+    "name": "left-pad",
+    "repo": "left-pad/left-pad",
+    "url": "https://github.com/left-pad/left-pad",
+    "description": "String left pad - The infamous package that broke the internet when unpublished",
+    "lastCommit": "2016-03-23",
+    "stars": 464,
+    "reason": "Historical significance - caused massive NPM ecosystem disruption. Now archived with no maintenance."
+  },
+  {
+    "name": "colors.js",
+    "repo": "Marak/colors.js",
+    "url": "https://github.com/Marak/colors.js",
+    "description": "Get colors in your node.js console",
+    "lastCommit": "2022-01-09",
+    "stars": 5100,
+    "reason": "Sabotaged by maintainer with infinite loop. Millions of downloads per week but now unmaintained."
+  },
+  {
+    "name": "node-uuid",
+    "repo": "kelektiv/node-uuid",
+    "url": "https://github.com/kelektiv/node-uuid",
+    "description": "Simple, fast generation of RFC4122 UUIDS",
+    "lastCommit": "2020-03-31",
+    "stars": 7200,
+    "reason": "Deprecated in favor of 'uuid' package. Many projects still depend on this unmaintained version."
+  },
+  {
+    "name": "request",
+    "repo": "request/request",
+    "url": "https://github.com/request/request",
+    "description": "Simplified HTTP request client",
+    "lastCommit": "2020-02-14",
+    "stars": 25600,
+    "reason": "Officially deprecated. Still has 16M+ weekly downloads but no security updates since 2020."
+  },
+  {
+    "name": "bower",
+    "repo": "bower/bower",
+    "url": "https://github.com/bower/bower",
+    "description": "A package manager for the web",
+    "lastCommit": "2022-09-13",
+    "stars": 15100,
+    "reason": "Deprecated package manager. Projects still using it face compatibility issues with modern tooling."
+  },
+  {
+    "name": "gulp",
+    "repo": "gulpjs/gulp",
+    "url": "https://github.com/gulpjs/gulp",
+    "description": "The streaming build system",
+    "lastCommit": "2023-01-15",
+    "stars": 32900,
+    "reason": "While not officially abandoned, development has stalled. Most modern projects use Webpack/Vite instead."
+  },
+  {
+    "name": "moment.js",
+    "repo": "moment/moment",
+    "url": "https://github.com/moment/moment",
+    "description": "Parse, validate, manipulate, and display dates in javascript",
+    "lastCommit": "2022-07-07",
+    "stars": 47800,
+    "reason": "In maintenance mode. Docs recommend using modern alternatives like date-fns or Luxon for new projects."
+  },
+  {
+    "name": "core-js",
+    "repo": "zloirock/core-js",
+    "url": "https://github.com/zloirock/core-js",
+    "description": "Modular standard library for JavaScript",
+    "lastCommit": "2023-12-20",
+    "stars": 24100,
+    "reason": "Maintainer burnout and funding issues. Critical infrastructure used by billions of websites."
+  },
+  {
+    "name": "event-stream",
+    "repo": "dominictarr/event-stream",
+    "url": "https://github.com/dominictarr/event-stream",
+    "description": "EventStream is like functional programming meets IO",
+    "lastCommit": "2019-09-04",
+    "stars": 1900,
+    "reason": "Compromised by malicious code injection in 2018. Now abandoned with known security vulnerabilities."
+  },
+  {
+    "name": "node-sass",
+    "repo": "sass/node-sass",
+    "url": "https://github.com/sass/node-sass",
+    "description": "Node.js bindings to libsass",
+    "lastCommit": "2021-10-26",
+    "stars": 8400,
+    "reason": "Deprecated in favor of Dart Sass. Native binding issues cause installation problems on modern systems."
+  }
+]
