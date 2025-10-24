@@ -33,17 +33,6 @@ Each project card displays:
 - **Description** - What the package does
 - **Risk explanation** - Why abandonment matters
 
-## 🗂️ Featured Abandoned Projects
-
-The site currently tracks notable projects including:
-
-- **request** - 16M+ weekly downloads, deprecated since 2020
-- **moment.js** - 47K+ stars, officially in maintenance mode
-- **node-sass** - Deprecated in favor of Dart Sass
-- **colors.js** - Sabotaged by maintainer with infinite loop
-- **bower** - Deprecated package manager
-- And more...
-
 ## 🛠️ Technology Stack
 
 - **[Astro](https://astro.build)** - Modern static site generator
