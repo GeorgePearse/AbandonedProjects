@@ -17,17 +17,52 @@ import projects from '../data/projects.json';
       <header>
         <h1>⚠️ Abandoned Projects</h1>
         <p class="subtitle">
-          Highlighting unmaintained GitHub projects that pose security risks and compatibility issues
+          A curated showcase of unmaintained GitHub projects that pose security risks and package compatibility issues
         </p>
+
         <div class="warning-box">
           <p>
             These projects are either officially deprecated, abandoned by maintainers, or no longer receiving security updates.
             Using them in production can lead to security vulnerabilities, compatibility problems, and maintenance headaches.
           </p>
         </div>
+
+        <div class="about-section">
+          <h2>🎯 Purpose</h2>
+          <p>
+            This project highlights popular open-source packages that have been abandoned, deprecated, or left unmaintained.
+            When developers continue to use these packages, they expose their projects to:
+          </p>
+          <ul>
+            <li><strong>Security vulnerabilities</strong> - No patches for newly discovered exploits</li>
+            <li><strong>Compatibility issues</strong> - Breaking changes with modern tooling and dependencies</li>
+            <li><strong>Technical debt</strong> - Harder to maintain and migrate away from over time</li>
+            <li><strong>Supply chain risks</strong> - Potential targets for malicious takeovers</li>
+          </ul>
+
+          <h2>🚀 Features</h2>
+          <ul>
+            <li><strong>Visual Card Layout</strong> - Easy-to-scan cards displaying project information</li>
+            <li><strong>Last Commit Tracking</strong> - Shows how long each project has been abandoned</li>
+            <li><strong>Risk Assessment</strong> - Explains why each abandoned project matters</li>
+            <li><strong>GitHub Integration</strong> - Direct links to repositories with star counts</li>
+            <li><strong>Responsive Design</strong> - Works seamlessly on mobile and desktop</li>
+          </ul>
+
+          <div class="contribute-box">
+            <h3>🤝 Want to Contribute?</h3>
+            <p>
+              Know of an abandoned project that should be listed? Check out the
+              <a href="https://github.com/GeorgePearse/AbandonedProjects#readme" target="_blank" rel="noopener noreferrer">
+                README on GitHub
+              </a> for contribution guidelines and add it to the list!
+            </p>
+          </div>
+        </div>
       </header>
 
       <main>
+        <h2 class="projects-title">📊 Featured Abandoned Projects</h2>
         <div class="projects-grid">
           {projects.map((project) => (
             <ProjectCard
@@ -49,6 +84,22 @@ import projects from '../data/projects.json';
         </p>
         <p>
           Built to raise awareness about abandoned dependencies in the JavaScript ecosystem.
+        </p>
+        <p>
+          <a href="https://github.com/GeorgePearse/AbandonedProjects" target="_blank" rel="noopener noreferrer">
+            View on GitHub
+          </a>
+          {' • '}
+          <a href="https://github.com/GeorgePearse/AbandonedProjects#readme" target="_blank" rel="noopener noreferrer">
+            Read the Docs
+          </a>
+          {' • '}
+          <a href="https://github.com/GeorgePearse/AbandonedProjects/issues" target="_blank" rel="noopener noreferrer">
+            Report an Issue
+          </a>
+        </p>
+        <p>
+          Built with <a href="https://claude.com/claude-code" target="_blank" rel="noopener noreferrer">Claude Code</a>
         </p>
       </footer>
     </div>
@@ -141,6 +192,90 @@ import projects from '../data/projects.json';
     line-height: 1.7;
   }
 
+  .about-section {
+    max-width: 900px;
+    margin: 3rem auto 0;
+    text-align: left;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .about-section h2 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem 0;
+    color: var(--text-primary);
+  }
+
+  .about-section h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .about-section p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .about-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .about-section li {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .about-section li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  .contribute-box {
+    background: var(--status-bg);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .contribute-box h3 {
+    margin: 0 0 0.75rem 0;
+    color: var(--accent);
+    font-size: 1.25rem;
+  }
+
+  .contribute-box p {
+    margin: 0;
+    color: var(--text-primary);
+  }
+
+  .contribute-box a {
+    color: var(--accent);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .contribute-box a:hover {
+    color: var(--text-primary);
+  }
+
+  .projects-title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 4rem 0 2rem 0;
+    color: var(--text-primary);
+  }
+
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -158,6 +293,17 @@ import projects from '../data/projects.json';
 
   footer p {
     margin: 0.5rem 0;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  footer a:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
   }
 
   @media (max-width: 768px) {
