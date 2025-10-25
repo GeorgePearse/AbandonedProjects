@@ -105,6 +105,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Community-maintained forks provide active maintenance, modern compatibility, security patches,
             and often serve as drop-in replacements with minimal migration effort.
           </p>
+
+          <h2>References</h2>
+          <p>
+            Learn more about best practices for managing abandoned open-source projects:
+          </p>
+          <ul>
+            <li><a href="https://github.com/isaacs/github/issues/1385" target="_blank" rel="noopener noreferrer">Handling abandoned repositories on GitHub</a></li>
+            <li><a href="https://www.reddit.com/r/opensource/comments/1bweept/githublabetc_etiquette_how_to_proceed_after_a/" target="_blank" rel="noopener noreferrer">GitHub/Lab/etc Etiquette - How to proceed after a project has been abandoned</a></li>
+            <li><a href="https://github.com/orgs/community/discussions/23164" target="_blank" rel="noopener noreferrer">GitHub policy about abandoned repositories</a></li>
+          </ul>
         </div>
       </main>
 
@@ -247,6 +257,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     left: 0;
     color: #000000;
     font-weight: normal;
+  }
+
+  .info-section li a {
+    color: #000000;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease;
+  }
+
+  .info-section li a:hover {
+    opacity: 0.7;
   }
 
   footer {
